@@ -1,0 +1,1982 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V9.30.1.335/W64 for ARM         05/Dec/2022  22:16:56
+# Copyright 1999-2022 IAR Systems AB.
+#
+#    Cpu mode          =  thumb
+#    Endian            =  little
+#    Source file       =
+#        C:\Users\@@@\SynologyDrive\@@@@@\@@@@\2022-2@@\@@@@@@@@@@@@\@
+#        @@@@\smart_carrier\user\main.c
+#    Command line      =
+#        -f "C:\Users\@@@\SynologyDrive\@@@@@\@@@@\2022-2@@\@@@@@@@@@@@@\@
+#        @@@@\smart_carrier\Debug\Obj\user\main.o.rsp"
+#        ("C:\Users\@@@\SynologyDrive\@@@@@\@@@@\2022-2@@\@@@@@@@@@@@@\@
+#        @@@@\smart_carrier\user\main.c" -D USE_STDPERIPH_DRIVER -D
+#        STM32F10X_CL -lC
+#        "C:\Users\@@@\SynologyDrive\@@@@@\@@@@\2022-2@@\@@@@@@@@@@@@\@
+#        @@@@\smart_carrier\Debug\List\user" -o
+#        "C:\Users\@@@\SynologyDrive\@@@@@\@@@@\2022-2@@\@@@@@@@@@@@@\@
+#        @@@@\smart_carrier\Debug\Obj\user" --no_cse --no_unroll --no_inline
+#        --no_code_motion --no_tbaa --no_clustering --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M3 -e --fpu=None --dlib_config
+#        "C:\Program Files\IAR Systems\Embedded Workbench
+#        9.1\arm\inc\c\DLib_Config_Normal.h" -I
+#        "C:\Users\@@@\SynologyDrive\@@@@@\@@@@\2022-2@@\@@@@@@@@@@@@\@
+#        @@@@\smart_carrier\libraries\CMSIS\DeviceSupport\\" -I
+#        "C:\Users\@@@\SynologyDrive\@@@@@\@@@@\2022-2@@\@@@@@@@@@@@@\@
+#        @@@@\smart_carrier\libraries\CMSIS\DeviceSupport\Startup\\" -I
+#        "C:\Users\@@@\SynologyDrive\@@@@@\@@@@\2022-2@@\@@@@@@@@@@@@\@
+#        @@@@\smart_carrier\libraries\STM32F10x_StdPeriph_Driver_v3.5\inc\\" -I
+#        "C:\Users\@@@\SynologyDrive\@@@@@\@@@@\2022-2@@\@@@@@@@@@@@@\@
+#        @@@@\smart_carrier\libraries\STM32F10x_StdPeriph_Driver_v3.5\src\\" -I
+#        "C:\Users\@@@\SynologyDrive\@@@@@\@@@@\2022-2@@\@@@@@@@@@@@@\@
+#        @@@@\smart_carrier\user\\" -I
+#        "C:\Users\@@@\SynologyDrive\@@@@@\@@@@\2022-2@@\@@@@@@@@@@@@\@
+#        @@@@\smart_carrier\user\inc\\" -Ol -I "C:\Program Files\IAR
+#        Systems\Embedded Workbench 9.1\arm\CMSIS\Core\Include\\")
+#        --dependencies=n
+#        "C:\Users\@@@\SynologyDrive\@@@@@\@@@@\2022-2@@\@@@@@@@@@@@@\@
+#        @@@@\smart_carrier\Debug\Obj\user\main.o.d"
+#    Locale            =  C
+#    List file         =
+#        C:\Users\@@@\SynologyDrive\@@@@@\@@@@\2022-2@@\@@@@@@@@@@@@\@
+#        @@@@\smart_carrier\Debug\List\user\main.lst
+#    Object file       =
+#        C:\Users\@@@\SynologyDrive\@@@@@\@@@@\2022-2@@\@@@@@@@@@@@@\@
+#        @@@@\smart_carrier\Debug\Obj\user\main.o
+#    Runtime model:       
+#      __CPP_Runtime   =  1
+#      __SystemLibrary =  DLib
+#      __dlib_version  =  6
+#      __size_limit    =  32768|ARM.EW.LINKER
+#
+###############################################################################
+
+C:\Users\@@@\SynologyDrive\@@@@@\@@@@\2022-2@@\@@@@@@@@@@@@\@ @@@@\smart_carrier\user\main.c
+      1          #include "stm32f10x.h"
+
+   \                                 In section .text, align 4, keep-with-next
+   \   static __softfp void __NVIC_EnableIRQ(IRQn_Type)
+   \                     __NVIC_EnableIRQ: (+1)
+   \        0x0   0x0001             MOVS     R1,R0
+   \        0x2   0xB249             SXTB     R1,R1
+   \        0x4   0x2900             CMP      R1,#+0
+   \        0x6   0xD409             BMI.N    ??__NVIC_EnableIRQ_0
+   \        0x8   0x2201             MOVS     R2,#+1
+   \        0xA   0xF010 0x011F      ANDS     R1,R0,#0x1F
+   \        0xE   0x408A             LSLS     R2,R2,R1
+   \       0x10   0x.... 0x....      LDR.W    R1,??DataTable17
+   \       0x14   0xB240             SXTB     R0,R0
+   \       0x16   0x0940             LSRS     R0,R0,#+5
+   \       0x18   0xF841 0x2020      STR      R2,[R1, R0, LSL #+2]
+   \                     ??__NVIC_EnableIRQ_0: (+1)
+   \       0x1C   0x4770             BX       LR
+      2          #include "stm32f10x_exti.h"
+      3          #include "stm32f10x_gpio.h"
+      4          #include "stm32f10x_usart.h"
+      5          #include "stm32f10x_rcc.h"
+      6          #include "stm32f10x_adc.h"
+      7          #include "misc.h"
+      8          
+      9          void RCC_Configure(void);
+     10          void USART1_Init(void);
+     11          void USART2_Init(void);
+     12          void NVIC_Configure(void);
+     13          void USART1_IRQHandler();
+     14          void USART2_IRQHandler();
+     15          void ADC_Configure(void);
+     16          
+
+   \                                 In section .bss, align 4
+     17          volatile uint32_t distance[1];
+   \                     distance:
+   \        0x0                      DS8 4
+
+   \                                 In section .bss, align 4
+     18          volatile uint32_t acc[1];
+   \                     acc:
+   \        0x0                      DS8 4
+     19          
+
+   \                                 In section .text, align 2, keep-with-next
+     20          void RCC_Configure(void)
+     21          {
+   \                     RCC_Configure: (+1)
+   \        0x0   0xB580             PUSH     {R7,LR}
+     22            // TODO: Enable the APB2 peripheral clock using the function 'RCC_APB2PeriphClockCmd'
+     23            /* UART TX/RX port clock enable */
+     24            RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+   \        0x2   0x2101             MOVS     R1,#+1
+   \        0x4   0x2004             MOVS     R0,#+4
+   \        0x6   0x.... 0x....      BL       RCC_APB2PeriphClockCmd
+     25            RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+   \        0xA   0x2101             MOVS     R1,#+1
+   \        0xC   0x2010             MOVS     R0,#+16
+   \        0xE   0x.... 0x....      BL       RCC_APB2PeriphClockCmd
+     26            
+     27            RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
+   \       0x12   0x2101             MOVS     R1,#+1
+   \       0x14   0xF44F 0x4080      MOV      R0,#+16384
+   \       0x18   0x.... 0x....      BL       RCC_APB2PeriphClockCmd
+     28            RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+   \       0x1C   0x2101             MOVS     R1,#+1
+   \       0x1E   0xF45F 0x3000      MOVS     R0,#+131072
+   \       0x22   0x.... 0x....      BL       RCC_APB1PeriphClockCmd
+     29          
+     30            RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+   \       0x26   0x2101             MOVS     R1,#+1
+   \       0x28   0xF44F 0x7000      MOV      R0,#+512
+   \       0x2C   0x.... 0x....      BL       RCC_APB2PeriphClockCmd
+     31            RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC3, ENABLE);
+   \       0x30   0x2101             MOVS     R1,#+1
+   \       0x32   0xF44F 0x4000      MOV      R0,#+32768
+   \       0x36   0x.... 0x....      BL       RCC_APB2PeriphClockCmd
+     32            
+     33            RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+   \       0x3A   0x2101             MOVS     R1,#+1
+   \       0x3C   0x2001             MOVS     R0,#+1
+   \       0x3E   0x.... 0x....      BL       RCC_AHBPeriphClockCmd
+     34            RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA2, ENABLE);
+   \       0x42   0x2101             MOVS     R1,#+1
+   \       0x44   0x2002             MOVS     R0,#+2
+   \       0x46   0x.... 0x....      BL       RCC_AHBPeriphClockCmd
+     35            
+     36            RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+   \       0x4A   0x2101             MOVS     R1,#+1
+   \       0x4C   0x2001             MOVS     R0,#+1
+   \       0x4E   0x.... 0x....      BL       RCC_APB1PeriphClockCmd
+     37            
+     38            RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
+   \       0x52   0x2101             MOVS     R1,#+1
+   \       0x54   0x2002             MOVS     R0,#+2
+   \       0x56   0x.... 0x....      BL       RCC_APB1PeriphClockCmd
+     39            RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+   \       0x5A   0x2101             MOVS     R1,#+1
+   \       0x5C   0x2008             MOVS     R0,#+8
+   \       0x5E   0x.... 0x....      BL       RCC_APB2PeriphClockCmd
+     40          }
+   \       0x62   0xBD01             POP      {R0,PC}
+     41          
+
+   \                                 In section .text, align 2, keep-with-next
+     42          void GPIO_Configure(void)
+     43          {
+   \                     GPIO_Configure: (+1)
+   \        0x0   0xB51C             PUSH     {R2-R4,LR}
+     44            GPIO_InitTypeDef GPIO_InitStructure;
+     45            
+     46           /* UART1 pin setting */
+     47            //TX
+     48            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+   \        0x2   0xF44F 0x7000      MOV      R0,#+512
+   \        0x6   0xF8AD 0x0000      STRH     R0,[SP, #+0]
+     49            GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   \        0xA   0x2003             MOVS     R0,#+3
+   \        0xC   0xF88D 0x0002      STRB     R0,[SP, #+2]
+     50            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+   \       0x10   0x2018             MOVS     R0,#+24
+   \       0x12   0xF88D 0x0003      STRB     R0,[SP, #+3]
+     51            GPIO_Init(GPIOA, &GPIO_InitStructure);
+   \       0x16   0x.... 0x....      LDR.W    R4,??DataTable17_1
+   \       0x1A   0x4669             MOV      R1,SP
+   \       0x1C   0x0020             MOVS     R0,R4
+   \       0x1E   0x.... 0x....      BL       GPIO_Init
+     52            //RX
+     53            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
+   \       0x22   0xF44F 0x6080      MOV      R0,#+1024
+   \       0x26   0xF8AD 0x0000      STRH     R0,[SP, #+0]
+     54            GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   \       0x2A   0x2003             MOVS     R0,#+3
+   \       0x2C   0xF88D 0x0002      STRB     R0,[SP, #+2]
+     55            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
+   \       0x30   0x2028             MOVS     R0,#+40
+   \       0x32   0xF88D 0x0003      STRB     R0,[SP, #+3]
+     56            GPIO_Init(GPIOA, &GPIO_InitStructure);
+   \       0x36   0x4669             MOV      R1,SP
+   \       0x38   0x0020             MOVS     R0,R4
+   \       0x3A   0x.... 0x....      BL       GPIO_Init
+     57            
+     58            /* UART2 pin setting */
+     59            //TX
+     60            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+   \       0x3E   0x2004             MOVS     R0,#+4
+   \       0x40   0xF8AD 0x0000      STRH     R0,[SP, #+0]
+     61            GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   \       0x44   0x2003             MOVS     R0,#+3
+   \       0x46   0xF88D 0x0002      STRB     R0,[SP, #+2]
+     62            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+   \       0x4A   0x2018             MOVS     R0,#+24
+   \       0x4C   0xF88D 0x0003      STRB     R0,[SP, #+3]
+     63            GPIO_Init(GPIOA, &GPIO_InitStructure);
+   \       0x50   0x4669             MOV      R1,SP
+   \       0x52   0x0020             MOVS     R0,R4
+   \       0x54   0x.... 0x....      BL       GPIO_Init
+     64            //RX
+     65            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
+   \       0x58   0x2008             MOVS     R0,#+8
+   \       0x5A   0xF8AD 0x0000      STRH     R0,[SP, #+0]
+     66            GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   \       0x5E   0x2003             MOVS     R0,#+3
+   \       0x60   0xF88D 0x0002      STRB     R0,[SP, #+2]
+     67            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
+   \       0x64   0x2028             MOVS     R0,#+40
+   \       0x66   0xF88D 0x0003      STRB     R0,[SP, #+3]
+     68            GPIO_Init(GPIOA, &GPIO_InitStructure);
+   \       0x6A   0x4669             MOV      R1,SP
+   \       0x6C   0x0020             MOVS     R0,R4
+   \       0x6E   0x.... 0x....      BL       GPIO_Init
+     69            
+     70            /* TIM2 setting */
+     71            // CH2
+     72            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
+   \       0x72   0x2002             MOVS     R0,#+2
+   \       0x74   0xF8AD 0x0000      STRH     R0,[SP, #+0]
+     73            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+   \       0x78   0x2018             MOVS     R0,#+24
+   \       0x7A   0xF88D 0x0003      STRB     R0,[SP, #+3]
+     74            GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   \       0x7E   0x2003             MOVS     R0,#+3
+   \       0x80   0xF88D 0x0002      STRB     R0,[SP, #+2]
+     75            GPIO_Init(GPIOA, &GPIO_InitStructure);
+   \       0x84   0x4669             MOV      R1,SP
+   \       0x86   0x0020             MOVS     R0,R4
+   \       0x88   0x.... 0x....      BL       GPIO_Init
+     76            
+     77            /* TIM3 setting */
+     78            // CH3
+     79            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+   \       0x8C   0x2001             MOVS     R0,#+1
+   \       0x8E   0xF8AD 0x0000      STRH     R0,[SP, #+0]
+     80            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+   \       0x92   0x2018             MOVS     R0,#+24
+   \       0x94   0xF88D 0x0003      STRB     R0,[SP, #+3]
+     81            GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   \       0x98   0x2003             MOVS     R0,#+3
+   \       0x9A   0xF88D 0x0002      STRB     R0,[SP, #+2]
+     82            GPIO_Init(GPIOB, &GPIO_InitStructure);
+   \       0x9E   0x.... 0x....      LDR.W    R4,??DataTable17_2
+   \       0xA2   0x4669             MOV      R1,SP
+   \       0xA4   0x0020             MOVS     R0,R4
+   \       0xA6   0x.... 0x....      BL       GPIO_Init
+     83            // CH4
+     84            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
+   \       0xAA   0x2002             MOVS     R0,#+2
+   \       0xAC   0xF8AD 0x0000      STRH     R0,[SP, #+0]
+     85            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+   \       0xB0   0x2018             MOVS     R0,#+24
+   \       0xB2   0xF88D 0x0003      STRB     R0,[SP, #+3]
+     86            GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   \       0xB6   0x2003             MOVS     R0,#+3
+   \       0xB8   0xF88D 0x0002      STRB     R0,[SP, #+2]
+     87            GPIO_Init(GPIOB, &GPIO_InitStructure);
+   \       0xBC   0x4669             MOV      R1,SP
+   \       0xBE   0x0020             MOVS     R0,R4
+   \       0xC0   0x.... 0x....      BL       GPIO_Init
+     88            
+     89            /* relay setting */
+     90            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
+   \       0xC4   0xF44F 0x7080      MOV      R0,#+256
+   \       0xC8   0xF8AD 0x0000      STRH     R0,[SP, #+0]
+     91            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+   \       0xCC   0x2010             MOVS     R0,#+16
+   \       0xCE   0xF88D 0x0003      STRB     R0,[SP, #+3]
+     92            GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   \       0xD2   0x2003             MOVS     R0,#+3
+   \       0xD4   0xF88D 0x0002      STRB     R0,[SP, #+2]
+     93            GPIO_Init(GPIOC, &GPIO_InitStructure);
+   \       0xD8   0x.... 0x....      LDR.W    R4,??DataTable17_3
+   \       0xDC   0x4669             MOV      R1,SP
+   \       0xDE   0x0020             MOVS     R0,R4
+   \       0xE0   0x.... 0x....      BL       GPIO_Init
+     94            
+     95            /* ADC1 setting */
+     96            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+   \       0xE4   0x2004             MOVS     R0,#+4
+   \       0xE6   0xF8AD 0x0000      STRH     R0,[SP, #+0]
+     97            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
+   \       0xEA   0x2000             MOVS     R0,#+0
+   \       0xEC   0xF88D 0x0003      STRB     R0,[SP, #+3]
+     98            GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   \       0xF0   0x2003             MOVS     R0,#+3
+   \       0xF2   0xF88D 0x0002      STRB     R0,[SP, #+2]
+     99            GPIO_Init(GPIOC, &GPIO_InitStructure);
+   \       0xF6   0x4669             MOV      R1,SP
+   \       0xF8   0x0020             MOVS     R0,R4
+   \       0xFA   0x.... 0x....      BL       GPIO_Init
+    100          }
+   \       0xFE   0xBD13             POP      {R0,R1,R4,PC}
+    101          
+
+   \                                 In section .text, align 2, keep-with-next
+    102          void USART1_Init(void)
+    103          {
+   \                     USART1_Init: (+1)
+   \        0x0   0xB51F             PUSH     {R0-R4,LR}
+    104            USART_InitTypeDef USART1_InitStructure;
+    105          
+    106            // Enable the USART1 peripheral
+    107            USART_Cmd(USART1, ENABLE);
+   \        0x2   0x.... 0x....      LDR.W    R4,??DataTable17_4
+   \        0x6   0x2101             MOVS     R1,#+1
+   \        0x8   0x0020             MOVS     R0,R4
+   \        0xA   0x.... 0x....      BL       USART_Cmd
+    108            
+    109            // TODO: Initialize the USART using the structure 'USART_InitTypeDef' and the function 'USART_Init'
+    110            USART1_InitStructure.USART_BaudRate = 115200;
+   \        0xE   0xF45F 0x30E1      MOVS     R0,#+115200
+   \       0x12   0x9000             STR      R0,[SP, #+0]
+    111            USART1_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+   \       0x14   0x2000             MOVS     R0,#+0
+   \       0x16   0xF8AD 0x000C      STRH     R0,[SP, #+12]
+    112            USART1_InitStructure.USART_Mode = USART_Mode_Tx | USART_Mode_Rx;
+   \       0x1A   0x200C             MOVS     R0,#+12
+   \       0x1C   0xF8AD 0x000A      STRH     R0,[SP, #+10]
+    113            USART1_InitStructure.USART_Parity = USART_Parity_No;
+   \       0x20   0x2000             MOVS     R0,#+0
+   \       0x22   0xF8AD 0x0008      STRH     R0,[SP, #+8]
+    114            USART1_InitStructure.USART_StopBits = USART_StopBits_1;
+   \       0x26   0x2000             MOVS     R0,#+0
+   \       0x28   0xF8AD 0x0006      STRH     R0,[SP, #+6]
+    115            USART1_InitStructure.USART_WordLength = USART_WordLength_8b;
+   \       0x2C   0x2000             MOVS     R0,#+0
+   \       0x2E   0xF8AD 0x0004      STRH     R0,[SP, #+4]
+    116            
+    117            USART_Init(USART1, &USART1_InitStructure);
+   \       0x32   0x4669             MOV      R1,SP
+   \       0x34   0x0020             MOVS     R0,R4
+   \       0x36   0x.... 0x....      BL       USART_Init
+    118            
+    119            // TODO: Enable the USART1 RX interrupts using the function 'USART_ITConfig' and the argument value 'Receive Data register not empty interrupt'
+    120            USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);	
+   \       0x3A   0x2201             MOVS     R2,#+1
+   \       0x3C   0xF240 0x5125      MOVW     R1,#+1317
+   \       0x40   0x0020             MOVS     R0,R4
+   \       0x42   0x.... 0x....      BL       USART_ITConfig
+    121          }
+   \       0x46   0xBD1F             POP      {R0-R4,PC}
+    122          
+
+   \                                 In section .text, align 2, keep-with-next
+    123          void USART2_Init(void)
+    124          {
+   \                     USART2_Init: (+1)
+   \        0x0   0xB51F             PUSH     {R0-R4,LR}
+    125            USART_InitTypeDef USART2_InitStructure;
+    126          
+    127            // Enable the USART2 peripheral
+    128            USART_Cmd(USART2, ENABLE);
+   \        0x2   0x.... 0x....      LDR.W    R4,??DataTable17_5
+   \        0x6   0x2101             MOVS     R1,#+1
+   \        0x8   0x0020             MOVS     R0,R4
+   \        0xA   0x.... 0x....      BL       USART_Cmd
+    129            
+    130            // TODO: Initialize the USART using the structure 'USART_InitTypeDef' and the function 'USART_Init'
+    131            USART2_InitStructure.USART_BaudRate = 115200;
+   \        0xE   0xF45F 0x30E1      MOVS     R0,#+115200
+   \       0x12   0x9000             STR      R0,[SP, #+0]
+    132            USART2_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+   \       0x14   0x2000             MOVS     R0,#+0
+   \       0x16   0xF8AD 0x000C      STRH     R0,[SP, #+12]
+    133            USART2_InitStructure.USART_Mode = USART_Mode_Tx | USART_Mode_Rx;
+   \       0x1A   0x200C             MOVS     R0,#+12
+   \       0x1C   0xF8AD 0x000A      STRH     R0,[SP, #+10]
+    134            USART2_InitStructure.USART_Parity = USART_Parity_No;
+   \       0x20   0x2000             MOVS     R0,#+0
+   \       0x22   0xF8AD 0x0008      STRH     R0,[SP, #+8]
+    135            USART2_InitStructure.USART_StopBits = USART_StopBits_1;
+   \       0x26   0x2000             MOVS     R0,#+0
+   \       0x28   0xF8AD 0x0006      STRH     R0,[SP, #+6]
+    136            USART2_InitStructure.USART_WordLength = USART_WordLength_8b;
+   \       0x2C   0x2000             MOVS     R0,#+0
+   \       0x2E   0xF8AD 0x0004      STRH     R0,[SP, #+4]
+    137            
+    138            USART_Init(USART2, &USART2_InitStructure);
+   \       0x32   0x4669             MOV      R1,SP
+   \       0x34   0x0020             MOVS     R0,R4
+   \       0x36   0x.... 0x....      BL       USART_Init
+    139            
+    140            // TODO: Enable the USART2 RX interrupts using the function 'USART_ITConfig' and the argument value 'Receive Data register not empty interrupt'
+    141            USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);
+   \       0x3A   0x2201             MOVS     R2,#+1
+   \       0x3C   0xF240 0x5125      MOVW     R1,#+1317
+   \       0x40   0x0020             MOVS     R0,R4
+   \       0x42   0x.... 0x....      BL       USART_ITConfig
+    142          }
+   \       0x46   0xBD1F             POP      {R0-R4,PC}
+    143          // microwave sensor config
+
+   \                                 In section .text, align 2, keep-with-next
+    144          void ADC1_Configure(void){
+   \                     ADC1_Configure: (+1)
+   \        0x0   0xB518             PUSH     {R3,R4,LR}
+   \        0x2   0xB085             SUB      SP,SP,#+20
+    145            ADC_InitTypeDef ADC;
+    146            ADC.ADC_Mode = ADC_Mode_Independent;
+   \        0x4   0x2000             MOVS     R0,#+0
+   \        0x6   0x9000             STR      R0,[SP, #+0]
+    147            ADC.ADC_ScanConvMode = DISABLE;
+   \        0x8   0x2000             MOVS     R0,#+0
+   \        0xA   0xF88D 0x0004      STRB     R0,[SP, #+4]
+    148            ADC.ADC_ContinuousConvMode = ENABLE;
+   \        0xE   0x2001             MOVS     R0,#+1
+   \       0x10   0xF88D 0x0005      STRB     R0,[SP, #+5]
+    149            ADC.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
+   \       0x14   0xF45F 0x2060      MOVS     R0,#+917504
+   \       0x18   0x9002             STR      R0,[SP, #+8]
+    150            ADC.ADC_DataAlign = ADC_DataAlign_Right;
+   \       0x1A   0x2000             MOVS     R0,#+0
+   \       0x1C   0x9003             STR      R0,[SP, #+12]
+    151            ADC.ADC_NbrOfChannel = 1;
+   \       0x1E   0x2001             MOVS     R0,#+1
+   \       0x20   0xF88D 0x0010      STRB     R0,[SP, #+16]
+    152            
+    153            ADC_Init(ADC1, &ADC);
+   \       0x24   0x.... 0x....      LDR.W    R4,??DataTable17_6
+   \       0x28   0x4669             MOV      R1,SP
+   \       0x2A   0x0020             MOVS     R0,R4
+   \       0x2C   0x.... 0x....      BL       ADC_Init
+    154            
+    155            ADC_RegularChannelConfig(ADC1, ADC_Channel_12,1, ADC_SampleTime_239Cycles5);
+   \       0x30   0x2307             MOVS     R3,#+7
+   \       0x32   0x2201             MOVS     R2,#+1
+   \       0x34   0x210C             MOVS     R1,#+12
+   \       0x36   0x0020             MOVS     R0,R4
+   \       0x38   0x.... 0x....      BL       ADC_RegularChannelConfig
+    156            //ADC_ITConfig(ADC1, ADC_IT_EOC, ENABLE);
+    157            
+    158            ADC_DMACmd(ADC1, ENABLE);
+   \       0x3C   0x2101             MOVS     R1,#+1
+   \       0x3E   0x0020             MOVS     R0,R4
+   \       0x40   0x.... 0x....      BL       ADC_DMACmd
+    159            ADC_Cmd(ADC1, ENABLE);
+   \       0x44   0x2101             MOVS     R1,#+1
+   \       0x46   0x0020             MOVS     R0,R4
+   \       0x48   0x.... 0x....      BL       ADC_Cmd
+    160            
+    161            ADC_ResetCalibration(ADC1);
+   \       0x4C   0x0020             MOVS     R0,R4
+   \       0x4E   0x.... 0x....      BL       ADC_ResetCalibration
+    162            while (ADC_GetResetCalibrationStatus(ADC1));
+   \                     ??ADC1_Configure_0: (+1)
+   \       0x52   0x0020             MOVS     R0,R4
+   \       0x54   0x.... 0x....      BL       ADC_GetResetCalibrationStatus
+   \       0x58   0x2800             CMP      R0,#+0
+   \       0x5A   0xD1FA             BNE.N    ??ADC1_Configure_0
+    163            ADC_StartCalibration(ADC1);
+   \       0x5C   0x0020             MOVS     R0,R4
+   \       0x5E   0x.... 0x....      BL       ADC_StartCalibration
+    164            while(ADC_GetCalibrationStatus(ADC1));
+   \                     ??ADC1_Configure_1: (+1)
+   \       0x62   0x0020             MOVS     R0,R4
+   \       0x64   0x.... 0x....      BL       ADC_GetCalibrationStatus
+   \       0x68   0x2800             CMP      R0,#+0
+   \       0x6A   0xD1FA             BNE.N    ??ADC1_Configure_1
+    165            ADC_SoftwareStartConvCmd(ADC1,ENABLE);
+   \       0x6C   0x2101             MOVS     R1,#+1
+   \       0x6E   0x0020             MOVS     R0,R4
+   \       0x70   0x.... 0x....      BL       ADC_SoftwareStartConvCmd
+    166          }
+   \       0x74   0xB006             ADD      SP,SP,#+24
+   \       0x76   0xBD10             POP      {R4,PC}
+    167          // microwave sensor config
+
+   \                                 In section .text, align 2, keep-with-next
+    168          void DMA1_Configure(void){
+   \                     DMA1_Configure: (+1)
+   \        0x0   0xB518             PUSH     {R3,R4,LR}
+   \        0x2   0xB08B             SUB      SP,SP,#+44
+    169            DMA_InitTypeDef DMA_Instructure;
+    170            DMA_DeInit(DMA1_Channel1);
+   \        0x4   0x.... 0x....      LDR.W    R4,??DataTable17_7
+   \        0x8   0x0020             MOVS     R0,R4
+   \        0xA   0x.... 0x....      BL       DMA_DeInit
+    171            DMA_Instructure.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR;
+   \        0xE   0x.... 0x....      LDR.W    R0,??DataTable17_8
+   \       0x12   0x9000             STR      R0,[SP, #+0]
+    172            DMA_Instructure.DMA_MemoryBaseAddr = (uint32_t)distance;
+   \       0x14   0x.... 0x....      LDR.W    R0,??DataTable17_9
+   \       0x18   0x9001             STR      R0,[SP, #+4]
+    173            DMA_Instructure.DMA_Mode = DMA_Mode_Circular;
+   \       0x1A   0x2020             MOVS     R0,#+32
+   \       0x1C   0x9008             STR      R0,[SP, #+32]
+    174            DMA_Instructure.DMA_Priority = DMA_Priority_High;
+   \       0x1E   0xF44F 0x5000      MOV      R0,#+8192
+   \       0x22   0x9009             STR      R0,[SP, #+36]
+    175            DMA_Instructure.DMA_BufferSize = 1;
+   \       0x24   0x2001             MOVS     R0,#+1
+   \       0x26   0x9003             STR      R0,[SP, #+12]
+    176            DMA_Instructure.DMA_DIR = DMA_DIR_PeripheralSRC;
+   \       0x28   0x2000             MOVS     R0,#+0
+   \       0x2A   0x9002             STR      R0,[SP, #+8]
+    177            DMA_Instructure.DMA_M2M = DMA_M2M_Disable;
+   \       0x2C   0x2000             MOVS     R0,#+0
+   \       0x2E   0x900A             STR      R0,[SP, #+40]
+    178            DMA_Instructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Word;
+   \       0x30   0xF44F 0x6000      MOV      R0,#+2048
+   \       0x34   0x9007             STR      R0,[SP, #+28]
+    179            DMA_Instructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Word;
+   \       0x36   0xF44F 0x7000      MOV      R0,#+512
+   \       0x3A   0x9006             STR      R0,[SP, #+24]
+    180            DMA_Instructure.DMA_MemoryInc = DMA_MemoryInc_Disable;
+   \       0x3C   0x2000             MOVS     R0,#+0
+   \       0x3E   0x9005             STR      R0,[SP, #+20]
+    181            DMA_Instructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+   \       0x40   0x2000             MOVS     R0,#+0
+   \       0x42   0x9004             STR      R0,[SP, #+16]
+    182            DMA_Init(DMA1_Channel1, &DMA_Instructure);
+   \       0x44   0x4669             MOV      R1,SP
+   \       0x46   0x0020             MOVS     R0,R4
+   \       0x48   0x.... 0x....      BL       DMA_Init
+    183            DMA_Cmd(DMA1_Channel1, ENABLE); 
+   \       0x4C   0x2101             MOVS     R1,#+1
+   \       0x4E   0x0020             MOVS     R0,R4
+   \       0x50   0x.... 0x....      BL       DMA_Cmd
+    184          }
+   \       0x54   0xB00C             ADD      SP,SP,#+48
+   \       0x56   0xBD10             POP      {R4,PC}
+    185          
+    186          // acc sensor config
+
+   \                                 In section .text, align 2, keep-with-next
+    187          void ADC3_Configure(void){
+   \                     ADC3_Configure: (+1)
+   \        0x0   0xB518             PUSH     {R3,R4,LR}
+   \        0x2   0xB085             SUB      SP,SP,#+20
+    188            ADC_InitTypeDef ADC;
+    189            ADC.ADC_Mode = ADC_Mode_Independent;
+   \        0x4   0x2000             MOVS     R0,#+0
+   \        0x6   0x9000             STR      R0,[SP, #+0]
+    190            ADC.ADC_ScanConvMode = DISABLE;
+   \        0x8   0x2000             MOVS     R0,#+0
+   \        0xA   0xF88D 0x0004      STRB     R0,[SP, #+4]
+    191            ADC.ADC_ContinuousConvMode = ENABLE;
+   \        0xE   0x2001             MOVS     R0,#+1
+   \       0x10   0xF88D 0x0005      STRB     R0,[SP, #+5]
+    192            ADC.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
+   \       0x14   0xF45F 0x2060      MOVS     R0,#+917504
+   \       0x18   0x9002             STR      R0,[SP, #+8]
+    193            ADC.ADC_DataAlign = ADC_DataAlign_Right;
+   \       0x1A   0x2000             MOVS     R0,#+0
+   \       0x1C   0x9003             STR      R0,[SP, #+12]
+    194            ADC.ADC_NbrOfChannel = 1;
+   \       0x1E   0x2001             MOVS     R0,#+1
+   \       0x20   0xF88D 0x0010      STRB     R0,[SP, #+16]
+    195            ADC_Init(ADC3, &ADC);
+   \       0x24   0x.... 0x....      LDR.W    R4,??DataTable17_10
+   \       0x28   0x4669             MOV      R1,SP
+   \       0x2A   0x0020             MOVS     R0,R4
+   \       0x2C   0x.... 0x....      BL       ADC_Init
+    196            
+    197            ADC_RegularChannelConfig(ADC3, ADC_Channel_12,1, ADC_SampleTime_239Cycles5);
+   \       0x30   0x2307             MOVS     R3,#+7
+   \       0x32   0x2201             MOVS     R2,#+1
+   \       0x34   0x210C             MOVS     R1,#+12
+   \       0x36   0x0020             MOVS     R0,R4
+   \       0x38   0x.... 0x....      BL       ADC_RegularChannelConfig
+    198            ADC_DMACmd(ADC3, ENABLE);
+   \       0x3C   0x2101             MOVS     R1,#+1
+   \       0x3E   0x0020             MOVS     R0,R4
+   \       0x40   0x.... 0x....      BL       ADC_DMACmd
+    199            ADC_Cmd(ADC3, ENABLE);
+   \       0x44   0x2101             MOVS     R1,#+1
+   \       0x46   0x0020             MOVS     R0,R4
+   \       0x48   0x.... 0x....      BL       ADC_Cmd
+    200            
+    201            ADC_ResetCalibration(ADC3);
+   \       0x4C   0x0020             MOVS     R0,R4
+   \       0x4E   0x.... 0x....      BL       ADC_ResetCalibration
+    202            while (ADC_GetResetCalibrationStatus(ADC3));
+   \                     ??ADC3_Configure_0: (+1)
+   \       0x52   0x0020             MOVS     R0,R4
+   \       0x54   0x.... 0x....      BL       ADC_GetResetCalibrationStatus
+   \       0x58   0x2800             CMP      R0,#+0
+   \       0x5A   0xD1FA             BNE.N    ??ADC3_Configure_0
+    203            ADC_StartCalibration(ADC3);
+   \       0x5C   0x0020             MOVS     R0,R4
+   \       0x5E   0x.... 0x....      BL       ADC_StartCalibration
+    204            while(ADC_GetCalibrationStatus(ADC3));
+   \                     ??ADC3_Configure_1: (+1)
+   \       0x62   0x0020             MOVS     R0,R4
+   \       0x64   0x.... 0x....      BL       ADC_GetCalibrationStatus
+   \       0x68   0x2800             CMP      R0,#+0
+   \       0x6A   0xD1FA             BNE.N    ??ADC3_Configure_1
+    205            ADC_SoftwareStartConvCmd(ADC3,ENABLE);
+   \       0x6C   0x2101             MOVS     R1,#+1
+   \       0x6E   0x0020             MOVS     R0,R4
+   \       0x70   0x.... 0x....      BL       ADC_SoftwareStartConvCmd
+    206          }
+   \       0x74   0xB006             ADD      SP,SP,#+24
+   \       0x76   0xBD10             POP      {R4,PC}
+    207          
+    208          // acc sensor config
+
+   \                                 In section .text, align 2, keep-with-next
+    209          void DMA2_Configure(void){
+   \                     DMA2_Configure: (+1)
+   \        0x0   0xB518             PUSH     {R3,R4,LR}
+   \        0x2   0xB08B             SUB      SP,SP,#+44
+    210            DMA_InitTypeDef DMA_Instructure;
+    211            DMA_DeInit(DMA2_Channel5);
+   \        0x4   0x.... 0x....      LDR.W    R4,??DataTable17_11
+   \        0x8   0x0020             MOVS     R0,R4
+   \        0xA   0x.... 0x....      BL       DMA_DeInit
+    212            DMA_Instructure.DMA_PeripheralBaseAddr = (uint32_t)&ADC3->DR;
+   \        0xE   0x.... 0x....      LDR.W    R0,??DataTable17_12
+   \       0x12   0x9000             STR      R0,[SP, #+0]
+    213            DMA_Instructure.DMA_MemoryBaseAddr = (uint32_t)acc;
+   \       0x14   0x.... 0x....      LDR.W    R0,??DataTable17_13
+   \       0x18   0x9001             STR      R0,[SP, #+4]
+    214            DMA_Instructure.DMA_Mode = DMA_Mode_Circular;
+   \       0x1A   0x2020             MOVS     R0,#+32
+   \       0x1C   0x9008             STR      R0,[SP, #+32]
+    215            DMA_Instructure.DMA_Priority = DMA_Priority_High;
+   \       0x1E   0xF44F 0x5000      MOV      R0,#+8192
+   \       0x22   0x9009             STR      R0,[SP, #+36]
+    216            DMA_Instructure.DMA_BufferSize = 1;
+   \       0x24   0x2001             MOVS     R0,#+1
+   \       0x26   0x9003             STR      R0,[SP, #+12]
+    217            DMA_Instructure.DMA_DIR = DMA_DIR_PeripheralSRC;
+   \       0x28   0x2000             MOVS     R0,#+0
+   \       0x2A   0x9002             STR      R0,[SP, #+8]
+    218            DMA_Instructure.DMA_M2M = DMA_M2M_Disable;
+   \       0x2C   0x2000             MOVS     R0,#+0
+   \       0x2E   0x900A             STR      R0,[SP, #+40]
+    219            DMA_Instructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Word;
+   \       0x30   0xF44F 0x6000      MOV      R0,#+2048
+   \       0x34   0x9007             STR      R0,[SP, #+28]
+    220            DMA_Instructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Word;
+   \       0x36   0xF44F 0x7000      MOV      R0,#+512
+   \       0x3A   0x9006             STR      R0,[SP, #+24]
+    221            DMA_Instructure.DMA_MemoryInc = DMA_MemoryInc_Disable;
+   \       0x3C   0x2000             MOVS     R0,#+0
+   \       0x3E   0x9005             STR      R0,[SP, #+20]
+    222            DMA_Instructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+   \       0x40   0x2000             MOVS     R0,#+0
+   \       0x42   0x9004             STR      R0,[SP, #+16]
+    223            DMA_Init(DMA2_Channel5, &DMA_Instructure);
+   \       0x44   0x4669             MOV      R1,SP
+   \       0x46   0x0020             MOVS     R0,R4
+   \       0x48   0x.... 0x....      BL       DMA_Init
+    224            DMA_Cmd(DMA2_Channel5, ENABLE); 
+   \       0x4C   0x2101             MOVS     R1,#+1
+   \       0x4E   0x0020             MOVS     R0,R4
+   \       0x50   0x.... 0x....      BL       DMA_Cmd
+    225          }
+   \       0x54   0xB00C             ADD      SP,SP,#+48
+   \       0x56   0xBD10             POP      {R4,PC}
+    226          // servo motor config
+
+   \                                 In section .text, align 2, keep-with-next
+    227          void TIM2_Configure(void)
+    228          {
+   \                     TIM2_Configure: (+1)
+   \        0x0   0xB500             PUSH     {LR}
+   \        0x2   0xB087             SUB      SP,SP,#+28
+    229            TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+    230            TIM_OCInitTypeDef TIM_OCInitStructure;
+    231            
+    232            TIM_TimeBaseStructure.TIM_Period = 10000; 
+   \        0x4   0xF242 0x7010      MOVW     R0,#+10000
+   \        0x8   0xF8AD 0x0004      STRH     R0,[SP, #+4]
+    233            TIM_TimeBaseStructure.TIM_Prescaler = 7200 / 50; // 10ms == 100Hz = 10000us
+   \        0xC   0x2090             MOVS     R0,#+144
+   \        0xE   0xF8AD 0x0000      STRH     R0,[SP, #+0]
+    234            TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+   \       0x12   0x2000             MOVS     R0,#+0
+   \       0x14   0xF8AD 0x0006      STRH     R0,[SP, #+6]
+    235            TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Down;
+   \       0x18   0x2010             MOVS     R0,#+16
+   \       0x1A   0xF8AD 0x0002      STRH     R0,[SP, #+2]
+    236            TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+   \       0x1E   0x4669             MOV      R1,SP
+   \       0x20   0xF05F 0x4080      MOVS     R0,#+1073741824
+   \       0x24   0x.... 0x....      BL       TIM_TimeBaseInit
+    237            
+    238            TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
+   \       0x28   0x2060             MOVS     R0,#+96
+   \       0x2A   0xF8AD 0x000C      STRH     R0,[SP, #+12]
+    239            TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+   \       0x2E   0x2000             MOVS     R0,#+0
+   \       0x30   0xF8AD 0x0014      STRH     R0,[SP, #+20]
+    240            TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+   \       0x34   0x2001             MOVS     R0,#+1
+   \       0x36   0xF8AD 0x000E      STRH     R0,[SP, #+14]
+    241            TIM_OCInitStructure.TIM_Pulse = 300; // us
+   \       0x3A   0xF44F 0x7096      MOV      R0,#+300
+   \       0x3E   0xF8AD 0x0012      STRH     R0,[SP, #+18]
+    242            TIM_OC2Init(TIM2, &TIM_OCInitStructure);
+   \       0x42   0xA903             ADD      R1,SP,#+12
+   \       0x44   0xF05F 0x4080      MOVS     R0,#+1073741824
+   \       0x48   0x.... 0x....      BL       TIM_OC2Init
+    243            TIM_OC2PreloadConfig(TIM2, TIM_OCPreload_Disable);
+   \       0x4C   0x2100             MOVS     R1,#+0
+   \       0x4E   0xF05F 0x4080      MOVS     R0,#+1073741824
+   \       0x52   0x.... 0x....      BL       TIM_OC2PreloadConfig
+    244            
+    245            TIM_ARRPreloadConfig(TIM2, ENABLE);
+   \       0x56   0x2101             MOVS     R1,#+1
+   \       0x58   0xF05F 0x4080      MOVS     R0,#+1073741824
+   \       0x5C   0x.... 0x....      BL       TIM_ARRPreloadConfig
+    246            TIM_Cmd(TIM2, ENABLE);
+   \       0x60   0x2101             MOVS     R1,#+1
+   \       0x62   0xF05F 0x4080      MOVS     R0,#+1073741824
+   \       0x66   0x.... 0x....      BL       TIM_Cmd
+    247          }
+   \       0x6A   0xB007             ADD      SP,SP,#+28
+   \       0x6C   0xBD00             POP      {PC}
+    248          
+    249          // motor config
+
+   \                                 In section .text, align 2, keep-with-next
+    250          void TIM3_Configure(void) {
+   \                     TIM3_Configure: (+1)
+   \        0x0   0xB518             PUSH     {R3,R4,LR}
+   \        0x2   0xB087             SUB      SP,SP,#+28
+    251            TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+    252            TIM_OCInitTypeDef TIM_OCInitStructure;
+    253            
+    254            TIM_TimeBaseStructure.TIM_Period = 10000; 
+   \        0x4   0xF242 0x7010      MOVW     R0,#+10000
+   \        0x8   0xF8AD 0x0014      STRH     R0,[SP, #+20]
+    255            TIM_TimeBaseStructure.TIM_Prescaler = 7200 / 100; // 10ms
+   \        0xC   0x2048             MOVS     R0,#+72
+   \        0xE   0xF8AD 0x0010      STRH     R0,[SP, #+16]
+    256            TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+   \       0x12   0x2000             MOVS     R0,#+0
+   \       0x14   0xF8AD 0x0016      STRH     R0,[SP, #+22]
+    257            TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Down;
+   \       0x18   0x2010             MOVS     R0,#+16
+   \       0x1A   0xF8AD 0x0012      STRH     R0,[SP, #+18]
+    258            TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
+   \       0x1E   0x....             LDR.N    R4,??DataTable17_14
+   \       0x20   0xA904             ADD      R1,SP,#+16
+   \       0x22   0x0020             MOVS     R0,R4
+   \       0x24   0x.... 0x....      BL       TIM_TimeBaseInit
+    259          
+    260            TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
+   \       0x28   0x2060             MOVS     R0,#+96
+   \       0x2A   0xF8AD 0x0000      STRH     R0,[SP, #+0]
+    261            TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+   \       0x2E   0x2000             MOVS     R0,#+0
+   \       0x30   0xF8AD 0x0008      STRH     R0,[SP, #+8]
+    262            TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+   \       0x34   0x2001             MOVS     R0,#+1
+   \       0x36   0xF8AD 0x0002      STRH     R0,[SP, #+2]
+    263            TIM_OCInitStructure.TIM_Pulse = 0; // us
+   \       0x3A   0x2000             MOVS     R0,#+0
+   \       0x3C   0xF8AD 0x0006      STRH     R0,[SP, #+6]
+    264            TIM_OC3Init(TIM3, &TIM_OCInitStructure);
+   \       0x40   0x4669             MOV      R1,SP
+   \       0x42   0x0020             MOVS     R0,R4
+   \       0x44   0x.... 0x....      BL       TIM_OC3Init
+    265            TIM_OC3PreloadConfig(TIM3, TIM_OCPreload_Disable);
+   \       0x48   0x2100             MOVS     R1,#+0
+   \       0x4A   0x0020             MOVS     R0,R4
+   \       0x4C   0x.... 0x....      BL       TIM_OC3PreloadConfig
+    266            
+    267            TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
+   \       0x50   0x2060             MOVS     R0,#+96
+   \       0x52   0xF8AD 0x0000      STRH     R0,[SP, #+0]
+    268            TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+   \       0x56   0x2000             MOVS     R0,#+0
+   \       0x58   0xF8AD 0x0008      STRH     R0,[SP, #+8]
+    269            TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+   \       0x5C   0x2001             MOVS     R0,#+1
+   \       0x5E   0xF8AD 0x0002      STRH     R0,[SP, #+2]
+    270            TIM_OCInitStructure.TIM_Pulse = 0; // us
+   \       0x62   0x2000             MOVS     R0,#+0
+   \       0x64   0xF8AD 0x0006      STRH     R0,[SP, #+6]
+    271            TIM_OC4Init(TIM3, &TIM_OCInitStructure);
+   \       0x68   0x4669             MOV      R1,SP
+   \       0x6A   0x0020             MOVS     R0,R4
+   \       0x6C   0x.... 0x....      BL       TIM_OC4Init
+    272            TIM_OC4PreloadConfig(TIM3, TIM_OCPreload_Disable);
+   \       0x70   0x2100             MOVS     R1,#+0
+   \       0x72   0x0020             MOVS     R0,R4
+   \       0x74   0x.... 0x....      BL       TIM_OC4PreloadConfig
+    273            
+    274            TIM_ARRPreloadConfig(TIM3, ENABLE);
+   \       0x78   0x2101             MOVS     R1,#+1
+   \       0x7A   0x0020             MOVS     R0,R4
+   \       0x7C   0x.... 0x....      BL       TIM_ARRPreloadConfig
+    275            TIM_Cmd(TIM3, ENABLE);
+   \       0x80   0x2101             MOVS     R1,#+1
+   \       0x82   0x0020             MOVS     R0,R4
+   \       0x84   0x.... 0x....      BL       TIM_Cmd
+    276          }
+   \       0x88   0xB008             ADD      SP,SP,#+32
+   \       0x8A   0xBD10             POP      {R4,PC}
+    277          
+
+   \                                 In section .text, align 2, keep-with-next
+    278          void NVIC_Configure(void) {
+   \                     NVIC_Configure: (+1)
+   \        0x0   0xB5E0             PUSH     {R5-R7,LR}
+    279            NVIC_InitTypeDef NVIC_InitStructure_UART1;
+    280            NVIC_InitTypeDef NVIC_InitStructure_UART2;
+    281            
+    282            NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
+   \        0x2   0xF44F 0x60E0      MOV      R0,#+1792
+   \        0x6   0x.... 0x....      BL       NVIC_PriorityGroupConfig
+    283            
+    284            // UART1
+    285            // 'NVIC_EnableIRQ' is only required for USART setting
+    286            NVIC_EnableIRQ(USART1_IRQn);
+   \        0xA   0x2025             MOVS     R0,#+37
+   \        0xC   0x.... 0x....      BL       __NVIC_EnableIRQ
+    287            NVIC_InitStructure_UART1.NVIC_IRQChannel = USART1_IRQn;
+   \       0x10   0x2025             MOVS     R0,#+37
+   \       0x12   0xF88D 0x0004      STRB     R0,[SP, #+4]
+    288            NVIC_InitStructure_UART1.NVIC_IRQChannelPreemptionPriority = 0;
+   \       0x16   0x2000             MOVS     R0,#+0
+   \       0x18   0xF88D 0x0005      STRB     R0,[SP, #+5]
+    289            NVIC_InitStructure_UART1.NVIC_IRQChannelSubPriority = 0;
+   \       0x1C   0x2000             MOVS     R0,#+0
+   \       0x1E   0xF88D 0x0006      STRB     R0,[SP, #+6]
+    290            NVIC_InitStructure_UART1.NVIC_IRQChannelCmd = ENABLE;
+   \       0x22   0x2001             MOVS     R0,#+1
+   \       0x24   0xF88D 0x0007      STRB     R0,[SP, #+7]
+    291            NVIC_Init(&NVIC_InitStructure_UART1);
+   \       0x28   0xA801             ADD      R0,SP,#+4
+   \       0x2A   0x.... 0x....      BL       NVIC_Init
+    292           
+    293            // UART2
+    294            // 'NVIC_EnableIRQ' is only required for USART setting
+    295            NVIC_EnableIRQ(USART2_IRQn);
+   \       0x2E   0x2026             MOVS     R0,#+38
+   \       0x30   0x.... 0x....      BL       __NVIC_EnableIRQ
+    296            NVIC_InitStructure_UART2.NVIC_IRQChannel = USART2_IRQn;
+   \       0x34   0x2026             MOVS     R0,#+38
+   \       0x36   0xF88D 0x0000      STRB     R0,[SP, #+0]
+    297            NVIC_InitStructure_UART2.NVIC_IRQChannelPreemptionPriority = 1;
+   \       0x3A   0x2001             MOVS     R0,#+1
+   \       0x3C   0xF88D 0x0001      STRB     R0,[SP, #+1]
+    298            NVIC_InitStructure_UART2.NVIC_IRQChannelSubPriority = 0;
+   \       0x40   0x2000             MOVS     R0,#+0
+   \       0x42   0xF88D 0x0002      STRB     R0,[SP, #+2]
+    299            NVIC_InitStructure_UART2.NVIC_IRQChannelCmd = ENABLE;
+   \       0x46   0x2001             MOVS     R0,#+1
+   \       0x48   0xF88D 0x0003      STRB     R0,[SP, #+3]
+    300            NVIC_Init(&NVIC_InitStructure_UART2);
+   \       0x4C   0x4668             MOV      R0,SP
+   \       0x4E   0x.... 0x....      BL       NVIC_Init
+    301          }
+   \       0x52   0xBD07             POP      {R0-R2,PC}
+    302          
+
+   \                                 In section .text, align 2, keep-with-next
+    303          void USART1_IRQHandler() {
+   \                     USART1_IRQHandler: (+1)
+   \        0x0   0xB538             PUSH     {R3-R5,LR}
+    304              uint16_t word;
+    305              
+    306              if(USART_GetITStatus(USART1,USART_IT_RXNE)!=RESET){
+   \        0x2   0x....             LDR.N    R4,??DataTable17_4
+   \        0x4   0xF240 0x5525      MOVW     R5,#+1317
+   \        0x8   0x0029             MOVS     R1,R5
+   \        0xA   0x0020             MOVS     R0,R4
+   \        0xC   0x.... 0x....      BL       USART_GetITStatus
+   \       0x10   0x2800             CMP      R0,#+0
+   \       0x12   0xD00B             BEQ.N    ??USART1_IRQHandler_0
+    307              	// the most recent received data by the USART1 peripheral
+    308                  word = USART_ReceiveData(USART1);
+   \       0x14   0x0020             MOVS     R0,R4
+   \       0x16   0x.... 0x....      BL       USART_ReceiveData
+   \       0x1A   0x0001             MOVS     R1,R0
+    309                  USART_SendData(USART2, word);
+   \       0x1C   0xB289             UXTH     R1,R1
+   \       0x1E   0x....             LDR.N    R0,??DataTable17_5
+   \       0x20   0x.... 0x....      BL       USART_SendData
+    310                  // clear 'Read data register not empty' flag
+    311              	USART_ClearITPendingBit(USART1,USART_IT_RXNE);
+   \       0x24   0x0029             MOVS     R1,R5
+   \       0x26   0x0020             MOVS     R0,R4
+   \       0x28   0x.... 0x....      BL       USART_ClearITPendingBit
+    312              }
+    313          }
+   \                     ??USART1_IRQHandler_0: (+1)
+   \       0x2C   0xBD31             POP      {R0,R4,R5,PC}
+    314          
+
+   \                                 In section .text, align 2, keep-with-next
+    315          void USART2_IRQHandler() {
+   \                     USART2_IRQHandler: (+1)
+   \        0x0   0xB5FE             PUSH     {R1-R7,LR}
+    316              uint16_t word;
+    317              
+    318              if(USART_GetITStatus(USART2,USART_IT_RXNE)!=RESET){
+   \        0x2   0x....             LDR.N    R4,??DataTable17_5
+   \        0x4   0xF240 0x5525      MOVW     R5,#+1317
+   \        0x8   0x0029             MOVS     R1,R5
+   \        0xA   0x0020             MOVS     R0,R4
+   \        0xC   0x.... 0x....      BL       USART_GetITStatus
+   \       0x10   0x2800             CMP      R0,#+0
+   \       0x12   0xD025             BEQ.N    ??USART2_IRQHandler_0
+    319              	// the most recent received data by the USART2 peripheral
+    320                  word = USART_ReceiveData(USART2);
+   \       0x14   0x0020             MOVS     R0,R4
+   \       0x16   0x.... 0x....      BL       USART_ReceiveData
+   \       0x1A   0x0001             MOVS     R1,R0
+    321                  if (word == '1') {
+   \       0x1C   0x0008             MOVS     R0,R1
+   \       0x1E   0xB280             UXTH     R0,R0
+   \       0x20   0x2831             CMP      R0,#+49
+   \       0x22   0xD115             BNE.N    ??USART2_IRQHandler_1
+    322                    const char cmd[] = "AT+INQ?\r\n";
+   \       0x24   0x4668             MOV      R0,SP
+   \       0x26   0x....             LDR.N    R1,??DataTable17_15
+   \       0x28   0x220A             MOVS     R2,#+10
+   \       0x2A   0x.... 0x....      BL       __aeabi_memcpy
+    323                    int i = 0;
+   \       0x2E   0x2000             MOVS     R0,#+0
+    324                    
+    325                    for (i = 0; i < 9; i++) {
+   \       0x30   0x2600             MOVS     R6,#+0
+   \                     ??USART2_IRQHandler_2: (+1)
+   \       0x32   0x2E09             CMP      R6,#+9
+   \       0x34   0xDA10             BGE.N    ??USART2_IRQHandler_3
+    326                      USART_SendData(USART2, cmd[i]);
+   \       0x36   0x466F             MOV      R7,SP
+   \       0x38   0x5DB9             LDRB     R1,[R7, R6]
+   \       0x3A   0xB289             UXTH     R1,R1
+   \       0x3C   0x0020             MOVS     R0,R4
+   \       0x3E   0x.... 0x....      BL       USART_SendData
+    327                      USART_SendData(USART1, cmd[i]);
+   \       0x42   0x5DB9             LDRB     R1,[R7, R6]
+   \       0x44   0xB289             UXTH     R1,R1
+   \       0x46   0x....             LDR.N    R0,??DataTable17_4
+   \       0x48   0x.... 0x....      BL       USART_SendData
+    328                    }
+   \       0x4C   0x1C76             ADDS     R6,R6,#+1
+   \       0x4E   0xE7F0             B.N      ??USART2_IRQHandler_2
+    329                  }
+    330                  else USART_SendData(USART1, word);
+   \                     ??USART2_IRQHandler_1: (+1)
+   \       0x50   0xB289             UXTH     R1,R1
+   \       0x52   0x....             LDR.N    R0,??DataTable17_4
+   \       0x54   0x.... 0x....      BL       USART_SendData
+    331                  
+    332                  // clear 'Read data register not empty' flag
+    333              	USART_ClearITPendingBit(USART2,USART_IT_RXNE);
+   \                     ??USART2_IRQHandler_3: (+1)
+   \       0x58   0x0029             MOVS     R1,R5
+   \       0x5A   0x0020             MOVS     R0,R4
+   \       0x5C   0x.... 0x....      BL       USART_ClearITPendingBit
+    334              }
+    335          }
+   \                     ??USART2_IRQHandler_0: (+1)
+   \       0x60   0xBDF7             POP      {R0-R2,R4-R7,PC}
+
+   \                                 In section .rodata, align 4
+   \                     ?_11:
+   \        0x0   0x41 0x54          DC8 "AT+INQ?\015\012"
+
+   \              0x2B 0x49    
+
+   \              0x4E 0x51    
+
+   \              0x3F 0x0D    
+
+   \              0x0A 0x00
+   \        0xA                      DS8 2
+    336          
+
+   \                                 In section .text, align 2, keep-with-next
+    337          void Delay(int time)
+    338          {
+    339              int i;
+    340              for (i = 0; i < time; i++) {}        
+   \                     Delay: (+1)
+   \        0x0   0x2100             MOVS     R1,#+0
+   \        0x2   0xE000             B.N      ??Delay_0
+   \                     ??Delay_1: (+1)
+   \        0x4   0x1C49             ADDS     R1,R1,#+1
+   \                     ??Delay_0: (+1)
+   \        0x6   0x4281             CMP      R1,R0
+   \        0x8   0xDBFC             BLT.N    ??Delay_1
+    341          }
+   \        0xA   0x4770             BX       LR
+    342          
+
+   \                                 In section .text, align 2, keep-with-next
+    343          void alert(void)
+    344          {
+   \                     alert: (+1)
+   \        0x0   0xB580             PUSH     {R7,LR}
+    345            printf("alert!\n");
+                   ^
+Warning[Pe223]: function "printf" declared implicitly
+   \        0x2   0x....             LDR.N    R0,??DataTable17_16
+   \        0x4   0x.... 0x....      BL       printf
+    346          }
+   \        0x8   0xBD01             POP      {R0,PC}
+
+   \                                 In section .bss, align 4
+    347          int32_t temp_CCR;
+   \                     temp_CCR:
+   \        0x0                      DS8 4
+    348          // stop, slow, fast
+
+   \                                 In section .rodata, align 4
+    349          const int speed_threshold[] = {0, 5000, 9999};
+   \                     speed_threshold:
+   \        0x0   0x0000'0000        DC32 0, 5'000, 9'999
+
+   \              0x0000'1388  
+
+   \              0x0000'270F
+
+   \                                 In section .rodata, align 4
+    350          const int speed_interval[] =  {100, 400, 1000};
+   \                     speed_interval:
+   \        0x0   0x0000'0064        DC32 100, 400, 1'000
+
+   \              0x0000'0190  
+
+   \              0x0000'03E8
+    351          enum STATE {STOP, SLOW, FAST};
+    352          
+
+   \                                 In section .bss, align 4
+    353          uint32_t limit_index = 0;
+   \                     limit_index:
+   \        0x0                      DS8 4
+
+   \                                 In section .bss, align 4
+    354          uint32_t interval_index = 0;
+   \                     interval_index:
+   \        0x0                      DS8 4
+    355          
+
+   \                                 In section .text, align 2, keep-with-next
+    356          void change_speed_high()
+    357          {
+   \                     change_speed_high: (+1)
+   \        0x0   0xB410             PUSH     {R4}
+    358            temp_CCR += speed_interval[interval_index];
+   \        0x2   0x....             LDR.N    R1,??DataTable17_17
+   \        0x4   0x680A             LDR      R2,[R1, #+0]
+   \        0x6   0x....             LDR.N    R0,??DataTable17_18
+   \        0x8   0x....             LDR.N    R3,??DataTable17_19
+   \        0xA   0x681B             LDR      R3,[R3, #+0]
+   \        0xC   0xF850 0x0023      LDR      R0,[R0, R3, LSL #+2]
+   \       0x10   0x1882             ADDS     R2,R0,R2
+   \       0x12   0x600A             STR      R2,[R1, #+0]
+    359            
+    360            if (temp_CCR < speed_threshold[limit_index]){
+   \       0x14   0x....             LDR.N    R0,??DataTable17_20
+   \       0x16   0x....             LDR.N    R2,??DataTable17_21
+   \       0x18   0x680B             LDR      R3,[R1, #+0]
+   \       0x1A   0x6804             LDR      R4,[R0, #+0]
+   \       0x1C   0xF852 0x4024      LDR      R4,[R2, R4, LSL #+2]
+   \       0x20   0x42A3             CMP      R3,R4
+   \       0x22   0xDA08             BGE.N    ??change_speed_high_0
+    361              TIM3->CCR3 = temp_CCR - 1;
+   \       0x24   0x6808             LDR      R0,[R1, #+0]
+   \       0x26   0x1E40             SUBS     R0,R0,#+1
+   \       0x28   0x....             LDR.N    R2,??DataTable17_22
+   \       0x2A   0x8010             STRH     R0,[R2, #+0]
+    362              TIM3->CCR4 = temp_CCR - 1;
+   \       0x2C   0x6808             LDR      R0,[R1, #+0]
+   \       0x2E   0x1E40             SUBS     R0,R0,#+1
+   \       0x30   0x....             LDR.N    R1,??DataTable17_23
+   \       0x32   0x8008             STRH     R0,[R1, #+0]
+   \       0x34   0xE003             B.N      ??change_speed_high_1
+    363            }
+    364            else
+    365              temp_CCR = speed_threshold[limit_index];
+   \                     ??change_speed_high_0: (+1)
+   \       0x36   0x6800             LDR      R0,[R0, #+0]
+   \       0x38   0xF852 0x0020      LDR      R0,[R2, R0, LSL #+2]
+   \       0x3C   0x6008             STR      R0,[R1, #+0]
+    366          }
+   \                     ??change_speed_high_1: (+1)
+   \       0x3E   0xBC10             POP      {R4}
+   \       0x40   0x4770             BX       LR
+    367          
+
+   \                                 In section .text, align 2, keep-with-next
+    368          void change_speed_low()
+    369          {
+   \                     change_speed_low: (+1)
+   \        0x0   0xB410             PUSH     {R4}
+    370            temp_CCR -= speed_interval[interval_index];
+   \        0x2   0x....             LDR.N    R1,??DataTable17_17
+   \        0x4   0x680A             LDR      R2,[R1, #+0]
+   \        0x6   0x....             LDR.N    R0,??DataTable17_18
+   \        0x8   0x....             LDR.N    R3,??DataTable17_19
+   \        0xA   0x681B             LDR      R3,[R3, #+0]
+   \        0xC   0xF850 0x0023      LDR      R0,[R0, R3, LSL #+2]
+   \       0x10   0x1A12             SUBS     R2,R2,R0
+   \       0x12   0x600A             STR      R2,[R1, #+0]
+    371            if (temp_CCR > speed_threshold[limit_index]) {
+   \       0x14   0x....             LDR.N    R0,??DataTable17_20
+   \       0x16   0x....             LDR.N    R2,??DataTable17_21
+   \       0x18   0x6803             LDR      R3,[R0, #+0]
+   \       0x1A   0xF852 0x3023      LDR      R3,[R2, R3, LSL #+2]
+   \       0x1E   0x680C             LDR      R4,[R1, #+0]
+   \       0x20   0x42A3             CMP      R3,R4
+   \       0x22   0xDA08             BGE.N    ??change_speed_low_0
+    372              TIM3->CCR3 = temp_CCR - 1;
+   \       0x24   0x6808             LDR      R0,[R1, #+0]
+   \       0x26   0x1E40             SUBS     R0,R0,#+1
+   \       0x28   0x....             LDR.N    R2,??DataTable17_22
+   \       0x2A   0x8010             STRH     R0,[R2, #+0]
+    373              TIM3->CCR4 = temp_CCR - 1;
+   \       0x2C   0x6808             LDR      R0,[R1, #+0]
+   \       0x2E   0x1E40             SUBS     R0,R0,#+1
+   \       0x30   0x....             LDR.N    R1,??DataTable17_23
+   \       0x32   0x8008             STRH     R0,[R1, #+0]
+   \       0x34   0xE003             B.N      ??change_speed_low_1
+    374            }
+    375            else
+    376              temp_CCR = speed_threshold[limit_index];
+   \                     ??change_speed_low_0: (+1)
+   \       0x36   0x6800             LDR      R0,[R0, #+0]
+   \       0x38   0xF852 0x0020      LDR      R0,[R2, R0, LSL #+2]
+   \       0x3C   0x6008             STR      R0,[R1, #+0]
+    377          }
+   \                     ??change_speed_low_1: (+1)
+   \       0x3E   0xBC10             POP      {R4}
+   \       0x40   0x4770             BX       LR
+    378          
+
+   \                                 In section .text, align 2, keep-with-next
+    379          void change_speed()
+    380          {
+   \                     change_speed: (+1)
+   \        0x0   0xB580             PUSH     {R7,LR}
+    381            if (temp_CCR < speed_threshold[limit_index])
+   \        0x2   0x....             LDR.N    R0,??DataTable17_17
+   \        0x4   0x6800             LDR      R0,[R0, #+0]
+   \        0x6   0x....             LDR.N    R1,??DataTable17_21
+   \        0x8   0x....             LDR.N    R2,??DataTable17_20
+   \        0xA   0x6812             LDR      R2,[R2, #+0]
+   \        0xC   0xF851 0x1022      LDR      R1,[R1, R2, LSL #+2]
+   \       0x10   0x4288             CMP      R0,R1
+   \       0x12   0xDA02             BGE.N    ??change_speed_0
+    382              change_speed_high();
+   \       0x14   0x.... 0x....      BL       change_speed_high
+   \       0x18   0xE001             B.N      ??change_speed_1
+    383            else
+    384              change_speed_low();
+   \                     ??change_speed_0: (+1)
+   \       0x1A   0x.... 0x....      BL       change_speed_low
+    385          }
+   \                     ??change_speed_1: (+1)
+   \       0x1E   0xBD01             POP      {R0,PC}
+    386          
+
+   \                                 In section .text, align 2, keep-with-next
+    387          void stop_motor()
+    388          {
+   \                     stop_motor: (+1)
+   \        0x0   0xB580             PUSH     {R7,LR}
+    389            int temp_interval = speed_interval[interval_index];
+                       ^
+Warning[Pe177]: variable "temp_interval" was declared but never referenced
+   \        0x2   0x....             LDR.N    R0,??DataTable17_18
+   \        0x4   0x....             LDR.N    R1,??DataTable17_19
+   \        0x6   0x6809             LDR      R1,[R1, #+0]
+   \        0x8   0xF850 0x0021      LDR      R0,[R0, R1, LSL #+2]
+   \        0xC   0xE004             B.N      ??stop_motor_0
+    390            while (temp_CCR > 0)
+    391            {
+    392              change_speed_low();
+   \                     ??stop_motor_1: (+1)
+   \        0xE   0x.... 0x....      BL       change_speed_low
+    393              Delay(10);
+   \       0x12   0x200A             MOVS     R0,#+10
+   \       0x14   0x.... 0x....      BL       Delay
+    394            }
+   \                     ??stop_motor_0: (+1)
+   \       0x18   0x....             LDR.N    R0,??DataTable17_17
+   \       0x1A   0x6800             LDR      R0,[R0, #+0]
+   \       0x1C   0x2801             CMP      R0,#+1
+   \       0x1E   0xDAF6             BGE.N    ??stop_motor_1
+    395          }
+   \       0x20   0xBD01             POP      {R0,PC}
+    396          
+
+   \                                 In section .text, align 2, keep-with-next
+    397          int angle_to_duty(int angle)
+    398          {
+    399            return angle * (950 / 180) + 300;
+   \                     angle_to_duty: (+1)
+   \        0x0   0x2105             MOVS     R1,#+5
+   \        0x2   0x4348             MULS     R0,R1,R0
+   \        0x4   0xF510 0x7096      ADDS     R0,R0,#+300
+   \        0x8   0x4770             BX       LR
+    400          }
+    401          
+
+   \                                 In section .text, align 2, keep-with-next
+    402          void change_angle(int angle)
+    403          {
+   \                     change_angle: (+1)
+   \        0x0   0xB580             PUSH     {R7,LR}
+    404            TIM2->CCR2 = angle_to_duty(angle);
+   \        0x2   0x.... 0x....      BL       angle_to_duty
+   \        0x6   0x....             LDR.N    R1,??DataTable17_24
+   \        0x8   0x8008             STRH     R0,[R1, #+0]
+    405          }
+   \        0xA   0xBD01             POP      {R0,PC}
+    406          
+
+   \                                 In section .rodata, align 4
+    407          const uint32_t distance_threshold = 900;
+   \                     distance_threshold:
+   \        0x0   0x0000'0384        DC32 900
+    408          // const uint32_t acc_threshold = 100;
+    409          
+
+   \                                 In section .data, align 4
+    410          int duty[] = {0, 2500, 5000, 7500, 5000, 2500};
+   \                     duty:
+   \        0x0   0x0000'0000        DC32 0, 2'500, 5'000, 7'500, 5'000, 2'500
+
+   \              0x0000'09C4  
+
+   \              0x0000'1388  
+
+   \              0x0000'1D4C  
+
+   \              0x0000'1388  
+
+   \              0x0000'09C4
+
+   \                                 In section .data, align 4
+    411          int angle[] = {0, 45, 90, 135, 180};
+   \                     angle:
+   \        0x0   0x0000'0000        DC32 0, 45, 90, 135, 180
+
+   \              0x0000'002D  
+
+   \              0x0000'005A  
+
+   \              0x0000'0087  
+
+   \              0x0000'00B4
+
+   \                                 In section .bss, align 4
+    412          int i = 0;
+   \                     i:
+   \        0x0                      DS8 4
+    413          
+
+   \                                 In section .text, align 2, keep-with-next
+    414          int main(void)
+    415          {
+   \                     main: (+1)
+   \        0x0   0xB580             PUSH     {R7,LR}
+    416            SystemInit();
+   \        0x2   0x.... 0x....      BL       SystemInit
+    417            printf("SystemInit Finished\n");
+                   ^
+Warning[Pe223]: function "printf" declared implicitly
+   \        0x6   0x....             LDR.N    R0,??DataTable17_25
+   \        0x8   0x.... 0x....      BL       printf
+    418            RCC_Configure();
+   \        0xC   0x.... 0x....      BL       RCC_Configure
+    419            printf("RCC_Configure Finished\n");
+   \       0x10   0x....             LDR.N    R0,??DataTable17_26
+   \       0x12   0x.... 0x....      BL       printf
+    420            GPIO_Configure();
+   \       0x16   0x.... 0x....      BL       GPIO_Configure
+    421            printf("GPIO_Configure Finished\n");
+   \       0x1A   0x....             LDR.N    R0,??DataTable17_27
+   \       0x1C   0x.... 0x....      BL       printf
+    422            USART1_Init();
+   \       0x20   0x.... 0x....      BL       USART1_Init
+    423            printf("USART1 Init Finished\n");
+   \       0x24   0x....             LDR.N    R0,??DataTable17_28
+   \       0x26   0x.... 0x....      BL       printf
+    424            USART2_Init();
+   \       0x2A   0x.... 0x....      BL       USART2_Init
+    425            printf("USART2 Init Finished\n");
+   \       0x2E   0x....             LDR.N    R0,??DataTable17_29
+   \       0x30   0x.... 0x....      BL       printf
+    426            // ADC1_Configure();
+    427            // printf("ADC1_Configure Finished\n");
+    428            // ADC3_Configure();
+    429            DMA1_Configure();
+   \       0x34   0x.... 0x....      BL       DMA1_Configure
+    430            printf("DMA1_Configure Finished\n");
+   \       0x38   0x....             LDR.N    R0,??DataTable17_30
+   \       0x3A   0x.... 0x....      BL       printf
+    431            //DMA2_Configure();
+    432            TIM2_Configure();
+   \       0x3E   0x.... 0x....      BL       TIM2_Configure
+    433            printf("TIM2_Configure Finished\n");
+   \       0x42   0x....             LDR.N    R0,??DataTable17_31
+   \       0x44   0x.... 0x....      BL       printf
+    434            TIM3_Configure();
+   \       0x48   0x.... 0x....      BL       TIM3_Configure
+    435            printf("TIM3_Confiture Finished\n");
+   \       0x4C   0x....             LDR.N    R0,??DataTable17_32
+   \       0x4E   0x.... 0x....      BL       printf
+    436            NVIC_Configure();
+   \       0x52   0x.... 0x....      BL       NVIC_Configure
+    437            printf("NVIC Configure Finished\n");
+   \       0x56   0x....             LDR.N    R0,??DataTable17_33
+   \       0x58   0x.... 0x....      BL       printf
+    438            interval_index = FAST;
+   \       0x5C   0x2002             MOVS     R0,#+2
+   \       0x5E   0x....             LDR.N    R1,??DataTable17_19
+   \       0x60   0x6008             STR      R0,[R1, #+0]
+    439            printf("System Ready to start!\n");
+   \       0x62   0x....             LDR.N    R0,??DataTable17_34
+   \       0x64   0x.... 0x....      BL       printf
+    440            int i = 0;
+   \       0x68   0x2000             MOVS     R0,#+0
+    441            while(1)
+   \                     ??main_0: (+1)
+   \       0x6A   0xE7FE             B.N      ??main_0
+    442            {
+    443              //TIM2->CCR2 = 9000;
+    444              /*
+    445              if(distance[0] > 1000) limit_index = FAST;
+    446              else if (distance[0] > 500) limit_index = SLOW;
+    447              else limit_index = STOP;
+    448              
+    449              change_speed();
+    450              printf("speed: %d,%d, distance: %d\n", TIM3->CCR3, TIM3->CCR4, distance[0]);
+    451              change_angle(angle[i++%5]);
+    452              Delay(200000);
+    453              */
+    454            }
+    455            
+    456            return 0;
+                   ^
+Warning[Pe111]: statement is unreachable
+
+    int i = 0;
+        ^
+"C:\Users\@@@\SynologyDrive\@@@@@\@@@@\2022-2@@\@@@@@@@@@@@@\@ @@@@\smart_carrier\user\main.c",440  Warning[Pe177]: 
+          variable "i" was declared but never referenced
+    457          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17:
+   \        0x0   0xE000'E100        DC32     0xe000e100
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_1:
+   \        0x0   0x4001'0800        DC32     0x40010800
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_2:
+   \        0x0   0x4001'0C00        DC32     0x40010c00
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_3:
+   \        0x0   0x4001'1000        DC32     0x40011000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_4:
+   \        0x0   0x4001'3800        DC32     0x40013800
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_5:
+   \        0x0   0x4000'4400        DC32     0x40004400
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_6:
+   \        0x0   0x4001'2400        DC32     0x40012400
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_7:
+   \        0x0   0x4002'0008        DC32     0x40020008
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_8:
+   \        0x0   0x4001'244C        DC32     0x4001244c
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_9:
+   \        0x0   0x....'....        DC32     distance
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_10:
+   \        0x0   0x4001'3C00        DC32     0x40013c00
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_11:
+   \        0x0   0x4002'0458        DC32     0x40020458
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_12:
+   \        0x0   0x4001'3C4C        DC32     0x40013c4c
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_13:
+   \        0x0   0x....'....        DC32     acc
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_14:
+   \        0x0   0x4000'0400        DC32     0x40000400
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_15:
+   \        0x0   0x....'....        DC32     ?_11
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_16:
+   \        0x0   0x....'....        DC32     ?_0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_17:
+   \        0x0   0x....'....        DC32     temp_CCR
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_18:
+   \        0x0   0x....'....        DC32     speed_interval
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_19:
+   \        0x0   0x....'....        DC32     interval_index
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_20:
+   \        0x0   0x....'....        DC32     limit_index
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_21:
+   \        0x0   0x....'....        DC32     speed_threshold
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_22:
+   \        0x0   0x4000'043C        DC32     0x4000043c
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_23:
+   \        0x0   0x4000'0440        DC32     0x40000440
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_24:
+   \        0x0   0x4000'0038        DC32     0x40000038
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_25:
+   \        0x0   0x....'....        DC32     ?_1
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_26:
+   \        0x0   0x....'....        DC32     ?_2
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_27:
+   \        0x0   0x....'....        DC32     ?_3
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_28:
+   \        0x0   0x....'....        DC32     ?_4
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_29:
+   \        0x0   0x....'....        DC32     ?_5
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_30:
+   \        0x0   0x....'....        DC32     ?_6
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_31:
+   \        0x0   0x....'....        DC32     ?_7
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_32:
+   \        0x0   0x....'....        DC32     ?_8
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_33:
+   \        0x0   0x....'....        DC32     ?_9
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable17_34:
+   \        0x0   0x....'....        DC32     ?_10
+
+   \                                 In section .rodata, align 4
+   \                     ?_0:
+   \        0x0   0x61 0x6C          DC8 "alert!\012"
+
+   \              0x65 0x72    
+
+   \              0x74 0x21    
+
+   \              0x0A 0x00
+
+   \                                 In section .rodata, align 4
+   \                     ?_1:
+   \        0x0   0x53 0x79          DC8 "SystemInit Finished\012"
+
+   \              0x73 0x74    
+
+   \              0x65 0x6D    
+
+   \              0x49 0x6E    
+
+   \              0x69 0x74    
+
+   \              0x20 0x46    
+
+   \              0x69 0x6E    
+
+   \              0x69 0x73    
+
+   \              0x68 0x65    
+
+   \              0x64 0x0A    
+
+   \              0x00
+   \       0x15                      DS8 3
+
+   \                                 In section .rodata, align 4
+   \                     ?_2:
+   \        0x0   0x52 0x43          DC8 "RCC_Configure Finished\012"
+
+   \              0x43 0x5F    
+
+   \              0x43 0x6F    
+
+   \              0x6E 0x66    
+
+   \              0x69 0x67    
+
+   \              0x75 0x72    
+
+   \              0x65 0x20    
+
+   \              0x46 0x69    
+
+   \              0x6E 0x69    
+
+   \              0x73 0x68    
+
+   \              0x65 0x64    
+
+   \              0x0A 0x00
+
+   \                                 In section .rodata, align 4
+   \                     ?_3:
+   \        0x0   0x47 0x50          DC8 "GPIO_Configure Finished\012"
+
+   \              0x49 0x4F    
+
+   \              0x5F 0x43    
+
+   \              0x6F 0x6E    
+
+   \              0x66 0x69    
+
+   \              0x67 0x75    
+
+   \              0x72 0x65    
+
+   \              0x20 0x46    
+
+   \              0x69 0x6E    
+
+   \              0x69 0x73    
+
+   \              0x68 0x65    
+
+   \              0x64 0x0A    
+
+   \              0x00
+   \       0x19                      DS8 3
+
+   \                                 In section .rodata, align 4
+   \                     ?_4:
+   \        0x0   0x55 0x53          DC8 "USART1 Init Finished\012"
+
+   \              0x41 0x52    
+
+   \              0x54 0x31    
+
+   \              0x20 0x49    
+
+   \              0x6E 0x69    
+
+   \              0x74 0x20    
+
+   \              0x46 0x69    
+
+   \              0x6E 0x69    
+
+   \              0x73 0x68    
+
+   \              0x65 0x64    
+
+   \              0x0A 0x00
+   \       0x16                      DS8 2
+
+   \                                 In section .rodata, align 4
+   \                     ?_5:
+   \        0x0   0x55 0x53          DC8 "USART2 Init Finished\012"
+
+   \              0x41 0x52    
+
+   \              0x54 0x32    
+
+   \              0x20 0x49    
+
+   \              0x6E 0x69    
+
+   \              0x74 0x20    
+
+   \              0x46 0x69    
+
+   \              0x6E 0x69    
+
+   \              0x73 0x68    
+
+   \              0x65 0x64    
+
+   \              0x0A 0x00
+   \       0x16                      DS8 2
+
+   \                                 In section .rodata, align 4
+   \                     ?_6:
+   \        0x0   0x44 0x4D          DC8 "DMA1_Configure Finished\012"
+
+   \              0x41 0x31    
+
+   \              0x5F 0x43    
+
+   \              0x6F 0x6E    
+
+   \              0x66 0x69    
+
+   \              0x67 0x75    
+
+   \              0x72 0x65    
+
+   \              0x20 0x46    
+
+   \              0x69 0x6E    
+
+   \              0x69 0x73    
+
+   \              0x68 0x65    
+
+   \              0x64 0x0A    
+
+   \              0x00
+   \       0x19                      DS8 3
+
+   \                                 In section .rodata, align 4
+   \                     ?_7:
+   \        0x0   0x54 0x49          DC8 "TIM2_Configure Finished\012"
+
+   \              0x4D 0x32    
+
+   \              0x5F 0x43    
+
+   \              0x6F 0x6E    
+
+   \              0x66 0x69    
+
+   \              0x67 0x75    
+
+   \              0x72 0x65    
+
+   \              0x20 0x46    
+
+   \              0x69 0x6E    
+
+   \              0x69 0x73    
+
+   \              0x68 0x65    
+
+   \              0x64 0x0A    
+
+   \              0x00
+   \       0x19                      DS8 3
+
+   \                                 In section .rodata, align 4
+   \                     ?_8:
+   \        0x0   0x54 0x49          DC8 "TIM3_Confiture Finished\012"
+
+   \              0x4D 0x33    
+
+   \              0x5F 0x43    
+
+   \              0x6F 0x6E    
+
+   \              0x66 0x69    
+
+   \              0x74 0x75    
+
+   \              0x72 0x65    
+
+   \              0x20 0x46    
+
+   \              0x69 0x6E    
+
+   \              0x69 0x73    
+
+   \              0x68 0x65    
+
+   \              0x64 0x0A    
+
+   \              0x00
+   \       0x19                      DS8 3
+
+   \                                 In section .rodata, align 4
+   \                     ?_9:
+   \        0x0   0x4E 0x56          DC8 "NVIC Configure Finished\012"
+
+   \              0x49 0x43    
+
+   \              0x20 0x43    
+
+   \              0x6F 0x6E    
+
+   \              0x66 0x69    
+
+   \              0x67 0x75    
+
+   \              0x72 0x65    
+
+   \              0x20 0x46    
+
+   \              0x69 0x6E    
+
+   \              0x69 0x73    
+
+   \              0x68 0x65    
+
+   \              0x64 0x0A    
+
+   \              0x00
+   \       0x19                      DS8 3
+
+   \                                 In section .rodata, align 4
+   \                     ?_10:
+   \        0x0   0x53 0x79          DC8 "System Ready to start!\012"
+
+   \              0x73 0x74    
+
+   \              0x65 0x6D    
+
+   \              0x20 0x52    
+
+   \              0x65 0x61    
+
+   \              0x64 0x79    
+
+   \              0x20 0x74    
+
+   \              0x6F 0x20    
+
+   \              0x73 0x74    
+
+   \              0x61 0x72    
+
+   \              0x74 0x21    
+
+   \              0x0A 0x00
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      32   ADC1_Configure
+        32   -> ADC_Cmd
+        32   -> ADC_DMACmd
+        32   -> ADC_GetCalibrationStatus
+        32   -> ADC_GetResetCalibrationStatus
+        32   -> ADC_Init
+        32   -> ADC_RegularChannelConfig
+        32   -> ADC_ResetCalibration
+        32   -> ADC_SoftwareStartConvCmd
+        32   -> ADC_StartCalibration
+      32   ADC3_Configure
+        32   -> ADC_Cmd
+        32   -> ADC_DMACmd
+        32   -> ADC_GetCalibrationStatus
+        32   -> ADC_GetResetCalibrationStatus
+        32   -> ADC_Init
+        32   -> ADC_RegularChannelConfig
+        32   -> ADC_ResetCalibration
+        32   -> ADC_SoftwareStartConvCmd
+        32   -> ADC_StartCalibration
+      56   DMA1_Configure
+        56   -> DMA_Cmd
+        56   -> DMA_DeInit
+        56   -> DMA_Init
+      56   DMA2_Configure
+        56   -> DMA_Cmd
+        56   -> DMA_DeInit
+        56   -> DMA_Init
+       0   Delay
+      16   GPIO_Configure
+        16   -> GPIO_Init
+      16   NVIC_Configure
+        16   -> NVIC_Init
+        16   -> NVIC_PriorityGroupConfig
+        16   -> __NVIC_EnableIRQ
+       8   RCC_Configure
+         8   -> RCC_AHBPeriphClockCmd
+         8   -> RCC_APB1PeriphClockCmd
+         8   -> RCC_APB2PeriphClockCmd
+      32   TIM2_Configure
+        32   -> TIM_ARRPreloadConfig
+        32   -> TIM_Cmd
+        32   -> TIM_OC2Init
+        32   -> TIM_OC2PreloadConfig
+        32   -> TIM_TimeBaseInit
+      40   TIM3_Configure
+        40   -> TIM_ARRPreloadConfig
+        40   -> TIM_Cmd
+        40   -> TIM_OC3Init
+        40   -> TIM_OC3PreloadConfig
+        40   -> TIM_OC4Init
+        40   -> TIM_OC4PreloadConfig
+        40   -> TIM_TimeBaseInit
+      16   USART1_IRQHandler
+        16   -> USART_ClearITPendingBit
+        16   -> USART_GetITStatus
+        16   -> USART_ReceiveData
+        16   -> USART_SendData
+      24   USART1_Init
+        24   -> USART_Cmd
+        24   -> USART_ITConfig
+        24   -> USART_Init
+      32   USART2_IRQHandler
+        32   -> USART_ClearITPendingBit
+        32   -> USART_GetITStatus
+        32   -> USART_ReceiveData
+        32   -> USART_SendData
+        32   -> __aeabi_memcpy
+      24   USART2_Init
+        24   -> USART_Cmd
+        24   -> USART_ITConfig
+        24   -> USART_Init
+       0   __NVIC_EnableIRQ
+       8   alert
+         8   -> printf
+       0   angle_to_duty
+       8   change_angle
+         8   -> angle_to_duty
+       8   change_speed
+         8   -> change_speed_high
+         8   -> change_speed_low
+       4   change_speed_high
+       4   change_speed_low
+       8   main
+         8   -> DMA1_Configure
+         8   -> GPIO_Configure
+         8   -> NVIC_Configure
+         8   -> RCC_Configure
+         8   -> SystemInit
+         8   -> TIM2_Configure
+         8   -> TIM3_Configure
+         8   -> USART1_Init
+         8   -> USART2_Init
+         8   -> printf
+       8   stop_motor
+         8   -> Delay
+         8   -> change_speed_low
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable17
+       4  ??DataTable17_1
+       4  ??DataTable17_10
+       4  ??DataTable17_11
+       4  ??DataTable17_12
+       4  ??DataTable17_13
+       4  ??DataTable17_14
+       4  ??DataTable17_15
+       4  ??DataTable17_16
+       4  ??DataTable17_17
+       4  ??DataTable17_18
+       4  ??DataTable17_19
+       4  ??DataTable17_2
+       4  ??DataTable17_20
+       4  ??DataTable17_21
+       4  ??DataTable17_22
+       4  ??DataTable17_23
+       4  ??DataTable17_24
+       4  ??DataTable17_25
+       4  ??DataTable17_26
+       4  ??DataTable17_27
+       4  ??DataTable17_28
+       4  ??DataTable17_29
+       4  ??DataTable17_3
+       4  ??DataTable17_30
+       4  ??DataTable17_31
+       4  ??DataTable17_32
+       4  ??DataTable17_33
+       4  ??DataTable17_34
+       4  ??DataTable17_4
+       4  ??DataTable17_5
+       4  ??DataTable17_6
+       4  ??DataTable17_7
+       4  ??DataTable17_8
+       4  ??DataTable17_9
+       8  ?_0
+      24  ?_1
+      24  ?_10
+      12  ?_11
+      24  ?_2
+      28  ?_3
+      24  ?_4
+      24  ?_5
+      28  ?_6
+      28  ?_7
+      28  ?_8
+      28  ?_9
+     120  ADC1_Configure
+     120  ADC3_Configure
+      88  DMA1_Configure
+      88  DMA2_Configure
+      12  Delay
+     256  GPIO_Configure
+      84  NVIC_Configure
+     100  RCC_Configure
+     110  TIM2_Configure
+     140  TIM3_Configure
+      46  USART1_IRQHandler
+      72  USART1_Init
+      98  USART2_IRQHandler
+      72  USART2_Init
+      30  __NVIC_EnableIRQ
+       4  acc
+      10  alert
+      20  angle
+      10  angle_to_duty
+      12  change_angle
+      32  change_speed
+      66  change_speed_high
+      66  change_speed_low
+       4  distance
+       4  distance_threshold
+      24  duty
+       4  i
+       4  interval_index
+       4  limit_index
+     108  main
+      12  speed_interval
+      12  speed_threshold
+      34  stop_motor
+       4  temp_CCR
+
+ 
+    24 bytes in section .bss
+    44 bytes in section .data
+   308 bytes in section .rodata
+ 1'914 bytes in section .text
+ 
+ 1'914 bytes of CODE  memory
+   308 bytes of CONST memory
+    68 bytes of DATA  memory
+
+Errors: none
+Warnings: 5
